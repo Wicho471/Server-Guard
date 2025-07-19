@@ -1,0 +1,38 @@
+{
+  "mappings": {
+    "org/axolotlj/serverguard/mixins/ServerStatusMixin": {
+      "handleStatusRequest": "Lnet/minecraft/server/network/ServerStatusPacketListenerImpl;m_6733_(Lnet/minecraft/network/protocol/status/ServerboundStatusRequestPacket;)V"
+    },
+    "org/axolotlj/serverguard/mixins/ServerHelloMixin": {
+      "handleHello": "Lnet/minecraft/server/network/ServerLoginPacketListenerImpl;m_5990_(Lnet/minecraft/network/protocol/login/ServerboundHelloPacket;)V"
+    },
+    "org/axolotlj/serverguard/mixins/accessor/ServerStatusPacketListenerAccessor": {
+      "connection": "f_10083_:Lnet/minecraft/network/Connection;"
+    },
+    "org/axolotlj/serverguard/mixins/ServerLoginMixin": {
+      "tick": "Lnet/minecraft/server/network/ServerLoginPacketListenerImpl;m_9933_()V"
+    },
+    "org/axolotlj/serverguard/mixins/ServerLoginUUIDMixin": {
+      "handleKey": "Lnet/minecraft/server/network/ServerLoginPacketListenerImpl;m_8072_(Lnet/minecraft/network/protocol/login/ServerboundKeyPacket;)V"
+    }
+  },
+  "data": {
+    "searge": {
+      "org/axolotlj/serverguard/mixins/ServerStatusMixin": {
+        "handleStatusRequest": "Lnet/minecraft/server/network/ServerStatusPacketListenerImpl;m_6733_(Lnet/minecraft/network/protocol/status/ServerboundStatusRequestPacket;)V"
+      },
+      "org/axolotlj/serverguard/mixins/ServerHelloMixin": {
+        "handleHello": "Lnet/minecraft/server/network/ServerLoginPacketListenerImpl;m_5990_(Lnet/minecraft/network/protocol/login/ServerboundHelloPacket;)V"
+      },
+      "org/axolotlj/serverguard/mixins/accessor/ServerStatusPacketListenerAccessor": {
+        "connection": "f_10083_:Lnet/minecraft/network/Connection;"
+      },
+      "org/axolotlj/serverguard/mixins/ServerLoginMixin": {
+        "tick": "Lnet/minecraft/server/network/ServerLoginPacketListenerImpl;m_9933_()V"
+      },
+      "org/axolotlj/serverguard/mixins/ServerLoginUUIDMixin": {
+        "handleKey": "Lnet/minecraft/server/network/ServerLoginPacketListenerImpl;m_8072_(Lnet/minecraft/network/protocol/login/ServerboundKeyPacket;)V"
+      }
+    }
+  }
+}

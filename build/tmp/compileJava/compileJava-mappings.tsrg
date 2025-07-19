@@ -1,1 +1,4 @@
-org/axolotlj/serverguard/mixin/ServerLoginUUIDMixin gameProfile f_10021_
+org/axolotlj/serverguard/mixins/ServerHelloMixin connection f_10013_
+org/axolotlj/serverguard/mixins/ServerLoginMixin connection f_10013_
+org/axolotlj/serverguard/mixins/ServerLoginUUIDMixin gameProfile f_10021_
+org/axolotlj/serverguard/mixins/ServerStatusMixin connection f_10083_

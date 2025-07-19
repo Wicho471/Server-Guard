@@ -61,4 +61,4 @@ ordering = "NONE"
 side = "SERVER"
 
 [mixins]
-config = "serverguard.mixins.json"
+config = "mixins.serverguard.refmap.json"

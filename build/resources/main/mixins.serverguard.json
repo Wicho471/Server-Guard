@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.7",
+  "package": "org.axolotlj.serverguard.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.serverguard.refmap.json",
+  "mixins": [
+    "ServerHelloMixin",
+    "ServerLoginMixin",
+    "ServerLoginUUIDMixin",
+    "ServerStatusMixin"
+  ],
+  "verbose": true,
+  "debug": true,
+  "client": [],
+  "server": [],
+  "accessors": [
+    "accessor.ServerStatusPacketListenerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

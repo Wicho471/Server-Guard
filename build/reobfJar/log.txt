@@ -141,7 +141,8 @@ Writing Output: C:\Users\Luis Emmanuel\Desktop\ServerGuard\build\reobfJar\output
   META-INF/
   META-INF/MANIFEST.MF
   META-INF/mods.toml
-  mixin.serverguard.json
+  mixins.serverguard.json
+  mixins.serverguard.refmap.json
   org/
   org/axolotlj/
   org/axolotlj/serverguard/
@@ -161,15 +162,14 @@ Writing Output: C:\Users\Luis Emmanuel\Desktop\ServerGuard\build\reobfJar\output
   org/axolotlj/serverguard/list/whitelist/IPWhitelistManager.class
   org/axolotlj/serverguard/list/whitelist/UUIDWhitelistManager$1.class
   org/axolotlj/serverguard/list/whitelist/UUIDWhitelistManager.class
-  org/axolotlj/serverguard/mixin/
-  org/axolotlj/serverguard/mixin/ServerHelloMixin.class
-  org/axolotlj/serverguard/mixin/ServerLoginMixin.class
-  org/axolotlj/serverguard/mixin/ServerLoginUUIDMixin.class
-  org/axolotlj/serverguard/mixin/ServerStatusMixin.class
-  org/axolotlj/serverguard/mixin/accessor/
-  org/axolotlj/serverguard/mixin/accessor/ServerStatusPacketListenerAccessor.class
+  org/axolotlj/serverguard/mixins/
+  org/axolotlj/serverguard/mixins/ServerHelloMixin.class
+  org/axolotlj/serverguard/mixins/ServerLoginMixin.class
+  org/axolotlj/serverguard/mixins/ServerLoginUUIDMixin.class
+  org/axolotlj/serverguard/mixins/ServerStatusMixin.class
+  org/axolotlj/serverguard/mixins/accessor/
+  org/axolotlj/serverguard/mixins/accessor/ServerStatusPacketListenerAccessor.class
   org/axolotlj/serverguard/util/
   org/axolotlj/serverguard/util/IPAddressResolver.class
   org/axolotlj/serverguard/util/ServerGuardProtectionTimer.class
   pack.mcmeta
-  serverguard.refmap.json
