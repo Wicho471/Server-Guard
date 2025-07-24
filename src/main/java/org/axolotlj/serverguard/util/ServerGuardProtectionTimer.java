@@ -8,6 +8,7 @@ import org.axolotlj.serverguard.config.ServerGuardConfig;
 public class ServerGuardProtectionTimer {
 
     private static final ServerGuardProtectionTimer INSTANCE = new ServerGuardProtectionTimer();
+
     private int remainingTicks = 0;
     private boolean active = false;
 
@@ -23,16 +24,14 @@ public class ServerGuardProtectionTimer {
 
     public void start(int seconds) {
         if (!active) {
-            prevIP = ServerGuardConfig.getInstance().ipWhitelistEnabled;
-            prevUUID = ServerGuardConfig.getInstance().uuidWhitelistEnabled;
-            prevName = ServerGuardConfig.getInstance().nameBlacklistEnabled;
+            prevIP = ServerGuardConfig.INSTANCE.ipWhitelistEnabled.get();
+            prevUUID = ServerGuardConfig.INSTANCE.uuidWhitelistEnabled.get();
+            prevName = ServerGuardConfig.INSTANCE.nameBlacklistEnabled.get();
         }
 
-        ServerGuardConfig config = ServerGuardConfig.getInstance();
-        config.ipWhitelistEnabled = false;
-        config.uuidWhitelistEnabled = false;
-        config.nameBlacklistEnabled = false;
-        config.save();
+        ServerGuardConfig.INSTANCE.ipWhitelistEnabled.set(false);
+        ServerGuardConfig.INSTANCE.uuidWhitelistEnabled.set(false);
+        ServerGuardConfig.INSTANCE.nameBlacklistEnabled.set(false);
 
         this.remainingTicks = seconds * 20;
         this.active = true;
@@ -41,11 +40,9 @@ public class ServerGuardProtectionTimer {
     public void stop() {
         if (!active) return;
 
-        ServerGuardConfig config = ServerGuardConfig.getInstance();
-        config.ipWhitelistEnabled = prevIP;
-        config.uuidWhitelistEnabled = prevUUID;
-        config.nameBlacklistEnabled = prevName;
-        config.save();
+        ServerGuardConfig.INSTANCE.ipWhitelistEnabled.set(prevIP);
+        ServerGuardConfig.INSTANCE.uuidWhitelistEnabled.set(prevUUID);
+        ServerGuardConfig.INSTANCE.nameBlacklistEnabled.set(prevName);
 
         active = false;
         remainingTicks = 0;
@@ -59,8 +56,12 @@ public class ServerGuardProtectionTimer {
             stop();
         }
     }
-
-    private ServerGuardConfig getConfig() {
-        return ServerGuardConfig.getInstance();
-    }
+    
+    public boolean isActive() {
+		return active;
+	}
+    
+    public int getRemainingTicks() {
+		return remainingTicks;
+	}
 }

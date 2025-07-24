@@ -26,7 +26,6 @@ public abstract class ServerLoginMixin {
 	
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void interceptLoginTick(CallbackInfo ci) {
-    	//Connection connection = ((ServerStatusPacketListenerAccessor) this).getConnection();
     	if (connection.getRemoteAddress() instanceof InetSocketAddress inet) {
         	
             String ip = inet.getAddress().getHostAddress();

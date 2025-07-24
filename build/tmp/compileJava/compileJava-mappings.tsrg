@@ -2,3 +2,4 @@ org/axolotlj/serverguard/mixins/ServerHelloMixin connection f_10013_
 org/axolotlj/serverguard/mixins/ServerLoginMixin connection f_10013_
 org/axolotlj/serverguard/mixins/ServerLoginUUIDMixin gameProfile f_10021_
 org/axolotlj/serverguard/mixins/ServerStatusMixin connection f_10083_
+org/axolotlj/serverguard/mixins/ServerLoginUUIDMixin disconnect (Lnet/minecraft/network/chat/Component;)V m_10053_

@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.login.ServerboundHelloPacket;
 import net.minecraft.server.network.ServerLoginPacketListenerImpl;
 
+import org.axolotlj.serverguard.config.ServerGuardConfig;
 import org.axolotlj.serverguard.list.blacklist.NameBlacklistManager;
 import org.axolotlj.serverguard.list.whitelist.IPWhitelistManager;
 import org.slf4j.Logger;
@@ -27,25 +28,27 @@ public abstract class ServerHelloMixin {
     
     @Inject(method = "handleHello", at = @At("HEAD"), cancellable = true)
     private void onHandleHello(ServerboundHelloPacket packet, CallbackInfo ci) {
-    	//Connection connection = ((ServerStatusPacketListenerAccessor) this).getConnection();
+		boolean alerts = ServerGuardConfig.INSTANCE.isConnectionAlertsEnabled();
+
     	if (connection.getRemoteAddress() instanceof InetSocketAddress inet) {
-        	
 
             String ip = inet.getAddress().getHostAddress();
             String playerName = packet.name();
 
-            LOGGER.info("Intercepted login attempt from IP: {} | Name: {}", ip, playerName);
+            if (alerts) LOGGER.info("Intercepted login attempt from IP: {} | Name: {}", ip, playerName);
             
             if (NameBlacklistManager.getInstance().isBlacklisted(playerName)) {
-            	LOGGER.warn("Blocked login from blacklisted name: {}", playerName);
+            	if (alerts) LOGGER.warn("Blocked login from blacklisted name: {}", playerName);
             	connection.disconnect(Component.literal("You are banned from this server."));
-            	 ci.cancel();
+            	connection.channel().close();
+            	ci.cancel();
             }
 
             if (!IPWhitelistManager.getInstance().islisted(ip)) {
-                LOGGER.warn("Blocked login from non-whitelisted IP: {}", ip);
+            	if (alerts) LOGGER.warn("Blocked login from non-whitelisted IP: {}", ip);
                 connection.disconnect(Component.literal("Your IP address is not whitelisted."));
-                ci.cancel(); // Detiene el procesamiento del login
+                connection.channel().close();
+                ci.cancel();
             }
         }
     }

@@ -2,8 +2,11 @@ package org.axolotlj.serverguard.mixins;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.login.ServerboundKeyPacket;
 import net.minecraft.server.network.ServerLoginPacketListenerImpl;
+import org.axolotlj.serverguard.config.ServerGuardConfig;
+import org.axolotlj.serverguard.list.whitelist.UUIDWhitelistManager;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,28 +19,36 @@ import java.util.UUID;
 @Mixin(ServerLoginPacketListenerImpl.class)
 public abstract class ServerLoginUUIDMixin {
 
-	private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
-	@Shadow
-	private GameProfile gameProfile;
+    @Shadow
+    private GameProfile gameProfile;
 
-	@Inject(method = "handleKey", at = @At("TAIL"))
-	private void onHandleKey(ServerboundKeyPacket packet, CallbackInfo ci) {
-		if (gameProfile == null) {
-			// No interferimos, solo logueamos
-			LOGGER.debug("GameProfile is null — skipping UUID analysis.");
-			return;
-		}
+    @Shadow
+    private void disconnect(Component reason) {}
 
-		String name = gameProfile.getName();
-		UUID uuid = gameProfile.getId();
+    @Inject(method = "handleKey", at = @At("TAIL"), cancellable = true)
+    private void onHandleKey(ServerboundKeyPacket packet, CallbackInfo ci) {
+        if (gameProfile == null) {
+            LOGGER.debug("GameProfile is null — skipping UUID analysis.");
+            return;
+        }
 
-		if (uuid != null) {
-			// Aquí puedes hacer análisis del UUID si deseas
-			LOGGER.info("Player login - Name: {} | UUID: {}", name, uuid);
-		} else {
-			// UUID es null, no se hace nada
-			LOGGER.debug("GameProfile has no UUID yet for player '{}'", name);
-		}
-	}
+        String playerName = gameProfile.getName();
+        UUID uuid = gameProfile.getId();
+        boolean alerts = ServerGuardConfig.INSTANCE.isConnectionAlertsEnabled();
+
+        if (uuid != null) {
+            if (alerts) LOGGER.info("Login attempt - Name: {} | UUID: {}", playerName, uuid);
+
+            if (!UUIDWhitelistManager.getInstance().islisted(uuid.toString())) {
+                if (alerts) LOGGER.warn("Blocked login from non-whitelisted UUID: {} (Player: {})", uuid, playerName);
+                disconnect(Component.literal("Your UUID is not whitelisted."));
+                ci.cancel();
+            }
+
+        } else {
+            LOGGER.warn("GameProfile has no UUID for player '{}', skipping check.", playerName);
+        }
+    }
 }

@@ -1,17 +1,21 @@
 package org.axolotlj.serverguard;
 
+import org.axolotlj.serverguard.command.ServerGuardCommand;
+import org.axolotlj.serverguard.config.ServerGuardConfig;
+import org.slf4j.Logger;
+
 import com.mojang.logging.LogUtils;
+
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-
-import org.axolotlj.serverguard.command.ServerGuardCommand;
-import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(ServerGuard.MODID)
@@ -24,7 +28,8 @@ public class ServerGuard
     
     private static boolean isDedicatedServer;
 
-    public ServerGuard()
+    @SuppressWarnings("removal")
+	public ServerGuard()
     {
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
         
@@ -32,6 +37,9 @@ public class ServerGuard
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ServerGuardConfig.CONFIG_SPEC, "serverguard/serverguard-common.toml");
+
 
     }
     

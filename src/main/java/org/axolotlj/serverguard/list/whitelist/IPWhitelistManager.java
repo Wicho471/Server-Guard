@@ -24,7 +24,7 @@ public class IPWhitelistManager extends AbstractListManager {
 
     @Override
     public synchronized boolean islisted(String entry) {
-        if (!ServerGuardConfig.getInstance().ipWhitelistEnabled) {
+        if (!ServerGuardConfig.INSTANCE.ipWhitelistEnabled.get()) {
             return true;
         }
 

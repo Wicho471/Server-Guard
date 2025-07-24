@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
+import org.axolotlj.serverguard.config.ServerGuardConfig;
 import org.axolotlj.serverguard.list.AbstractListManager;
 
 public class UUIDWhitelistManager extends AbstractListManager {
@@ -16,6 +17,14 @@ public class UUIDWhitelistManager extends AbstractListManager {
 
     public static UUIDWhitelistManager getInstance() {
         return INSTANCE;
+    }
+    
+    @Override
+    public synchronized boolean islisted(String entry) {
+        if (!ServerGuardConfig.INSTANCE.uuidWhitelistEnabled.get()) {
+            return true;
+        }
+        return list.contains(entry);
     }
 
     @Override

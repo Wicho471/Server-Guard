@@ -7,22 +7,22 @@ plugins {
 }
 
 def minecraft_version = '1.20.1'
-def forge_version = '47.4.0'
+def forge_version = '47.2.0'
 def mapping_channel = 'official'
 def mapping_version = '1.20.1'
 def mod_id = 'serverguard'
 def mod_name = 'ServerGuard'
 def mod_license = 'MIT'
-def mod_version = '1.0.0'
+def mod_version = '1.1.0'
 def mod_authors = 'Axolotj'
-def mod_description = 'Mod para protección y administración de servidores Minecraft.'
+def mod_description = 'Advanced server-side protection tools for Minecraft servers.'
 
 def minecraft_version_range = "[1.20.1,1.21)"
-def forge_version_range = "[47.4.0,)"
+def forge_version_range = "[47.2.0,)"
 def loader_version_range = "[1,)"
 def side = "SERVER"
 
-version = '1.0.0'
+version = '1.1.0'
 group = 'org.axolotj'
 
 base {

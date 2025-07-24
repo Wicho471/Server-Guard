@@ -1,59 +1,68 @@
 package org.axolotlj.serverguard.config;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-
-import org.slf4j.Logger;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.mojang.logging.LogUtils;
-
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.common.ForgeConfigSpec;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class ServerGuardConfig {
 
-    private static final Logger LOGGER = LogUtils.getLogger();
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final File CONFIG_FILE = FMLPaths.CONFIGDIR.get().resolve("serverguard-config.json").toFile();
+    public static final ForgeConfigSpec CONFIG_SPEC;
+    public static final ServerGuardConfig INSTANCE;
 
-    public boolean ipWhitelistEnabled = false;
-    public boolean uuidWhitelistEnabled = false;
-    public boolean nameBlacklistEnabled = false;
+    public final ForgeConfigSpec.BooleanValue ipWhitelistEnabled;
+    public final ForgeConfigSpec.BooleanValue uuidWhitelistEnabled;
+    public final ForgeConfigSpec.BooleanValue nameBlacklistEnabled;
+    public final ForgeConfigSpec.BooleanValue pingAlertsEnabled;
+    public final ForgeConfigSpec.BooleanValue connectionAlertsEnabled;
 
-    private static ServerGuardConfig INSTANCE;
-
-    public static ServerGuardConfig getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ServerGuardConfig();
-            INSTANCE.load();
-        }
-        return INSTANCE;
+    static {
+        Pair<ServerGuardConfig, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(ServerGuardConfig::new);
+        INSTANCE = pair.getLeft();
+        CONFIG_SPEC = pair.getRight();
     }
 
-    public void load() {
-        try {
-            if (CONFIG_FILE.exists()) {
-                try (FileReader reader = new FileReader(CONFIG_FILE)) {
-                    ServerGuardConfig config = GSON.fromJson(reader, ServerGuardConfig.class);
-                    this.ipWhitelistEnabled = config.ipWhitelistEnabled;
-                    this.uuidWhitelistEnabled = config.uuidWhitelistEnabled;
-                    this.nameBlacklistEnabled = config.nameBlacklistEnabled;
-                }
-            } else {
-                save(); 
-            }
-        } catch (Exception e) {
-            LOGGER.error("[ServerGuard] Failed to load configuration", e);
-        }
+    private ServerGuardConfig(ForgeConfigSpec.Builder builder) {
+        builder.push("protection");
+	        ipWhitelistEnabled = builder
+	            .comment("Enable IP whitelist protection. Only whitelisted IPs will be allowed.")
+	            .define("ipWhitelistEnabled", true);
+	
+	        uuidWhitelistEnabled = builder
+	            .comment("Enable UUID whitelist protection. Only whitelisted UUIDs will be allowed.")
+	            .define("uuidWhitelistEnabled", false);
+	
+	        nameBlacklistEnabled = builder
+	            .comment("Enable name blacklist protection. Disallows players with names containing banned patterns.")
+	            .define("nameBlacklistEnabled", true);
+        builder.pop();
+        
+        builder.push("alerts");
+        	pingAlertsEnabled = builder
+                .comment("Enable console logging for ping requests. When enabled, all ping attempts to the dedicated server will be printed to the console.")
+                .define("pingAlertsEnabled", true);
+
+            connectionAlertsEnabled = builder
+                .comment("Enable console logging for connection attempts. When enabled, all join attempts to the dedicated server will be printed to the console.")
+                .define("connectionAlertsEnabled", true);
+        builder.pop();
     }
 
-    public void save() {
-        try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-            GSON.toJson(this, writer);
-        } catch (Exception e) {
-            LOGGER.error("[ServerGuard] Failed to save configuration", e);
-        }
+    public boolean isIpWhitelistEnabled() {
+        return ipWhitelistEnabled.get();
     }
+
+    public boolean isUuidWhitelistEnabled() {
+        return uuidWhitelistEnabled.get();
+    }
+
+    public boolean isNameBlacklistEnabled() {
+        return nameBlacklistEnabled.get();
+    }
+    
+    public boolean isPingAlertsEnabled() {
+		return pingAlertsEnabled.get();
+	}
+    
+    public boolean isConnectionAlertsEnabled() {
+		return connectionAlertsEnabled.get();
+	}
 }

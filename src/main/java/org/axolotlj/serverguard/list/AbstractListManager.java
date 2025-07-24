@@ -67,6 +67,7 @@ public abstract class AbstractListManager {
 					}
 				}
 			}
+			initializeDefaultsIfNeeded(file);
 		} catch (Exception e) {
 			logger.error("[ServerGuard] Failed to load whitelist from file: {}", file.getName(), e);
 		}
@@ -88,4 +89,19 @@ public abstract class AbstractListManager {
 	protected static class WhitelistData {
 		Set<String> entries;
 	}
+
+	protected void initializeDefaultsIfNeeded(File file) {
+	    if (!file.exists()) {
+	        try {
+	            WhitelistData emptyData = new WhitelistData();
+	            emptyData.entries = new HashSet<>();
+	            try (FileWriter writer = new FileWriter(file)) {
+	                gson.toJson(emptyData, writer);
+	            }
+	        } catch (Exception e) {
+	            logger.error("[ServerGuard] Error try to create file: {}", file.getName(), e);
+	        }
+	    }
+	}
+
 }

@@ -3,8 +3,8 @@ Specification-Title: serverguard
 Specification-Vendor: Axolotj
 Specification-Version: 1
 Implementation-Title: ServerGuard
-Implementation-Version: 1.0.0
+Implementation-Version: 1.1.0
 Implementation-Vendor: Axolotj
-Implementation-Timestamp: 2025-07-19T00:36:14-0600
+Implementation-Timestamp: 2025-07-21T18:30:30-0600
 MixinConfigs: mixins.serverguard.json
 
